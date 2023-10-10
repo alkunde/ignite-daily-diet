@@ -15,3 +15,15 @@ export const TitleList = styled.Text`
   `};
   margin-bottom: 8px;
 `;
+
+export const DateText = styled.Text`
+  width: 100%;
+  ${({ theme }) => css`
+    color: ${theme.COLORS.GRAY_100};
+    font-size: ${theme.SIZES.TITLE_S}px;
+    font-family: ${theme.FONTS.BOLD};
+    background-color: ${theme.COLORS.GRAY_700};
+  `};
+  padding-top: 32px;
+  padding-bottom: 8px;
+`;

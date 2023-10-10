@@ -1,15 +1,27 @@
-import { Container, HourText, Separator, DescriptionText, Status } from './styles';
+import { MealPresentation } from '@storage/meal/MealStorageDTO';
 
-export function Meal() {
+import {
+  Container,
+  HourText,
+  Separator,
+  DescriptionText,
+  Status,
+} from './styles';
+
+type Props = {
+  item: MealPresentation;
+}
+
+export function Meal({ item }: Props) {
   return (
     <Container>
-      <HourText>20:00</HourText>
+      <HourText>{item.hour}</HourText>
 
       <Separator />
 
-      <DescriptionText>X-tudo</DescriptionText>
+      <DescriptionText>{item.name}</DescriptionText>
 
-      <Status />
+      <Status status={item.status} />
     </Container>
   );
 }

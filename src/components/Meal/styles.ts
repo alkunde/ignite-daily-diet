@@ -1,5 +1,9 @@
 import styled, { css } from 'styled-components/native';
 
+type Props = {
+  status: boolean;
+}
+
 export const Container = styled.View`
   width: 100%;
   flex-direction: row;
@@ -35,9 +39,9 @@ export const DescriptionText = styled.Text`
   `};
 `;
 
-export const Status = styled.View`
+export const Status = styled.View<Props>`
   width: 14px;
   height: 14px;
   border-radius: 7px;
-  background-color: ${({ theme }) => theme.COLORS.RED_MEDIUM};
+  background-color: ${({ theme, status}) => status ? theme.COLORS.GREEN_MEDIUM : theme.COLORS.RED_MEDIUM};
 `;

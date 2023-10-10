@@ -1,27 +1,114 @@
-import { useState } from 'react';
-import { FlatList, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import { Alert, SectionList, View } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { Header } from '@components/Header';
 import { Resume } from '@components/Resume';
 import { Button } from '@components/Button';
+import { Meal } from '@components/Meal';
 
-import { Container, TitleList } from './styles';
-import { DayItem } from '@components/DayItem';
+import { MealPresentation } from '@storage/meal/MealStorageDTO';
+
+import { Container, TitleList, DateText } from './styles';
+
+type DietPresentation = {
+  date: string;
+  data: MealPresentation[];
+}
 
 export function Home() {
   const { navigate } = useNavigation();
 
-  const [dietList, setDietList] = useState([
+  const [loading, setLoading] = useState(true);
+  const [dietList, setDietList] = useState<DietPresentation[]>([
     {
-      data: '12.08.22',
-      items: ['X-tudo', 'Whey protein com leite', 'Salada ceasar com frango', 'Nova refeição']
+      date: '12.08.22',
+      data: [
+        {
+          id: 'abx',
+          hour: '07:00',
+          name: 'X-tudo',
+          status: false,
+        },
+        {
+          id: 'abc',
+          hour: '08:00',
+          name: 'Café da manhã',
+          status: true,
+        }
+      ]
     },
     {
-      data: '11.08.22',
-      items: ['X-tudo', 'Whey protein com leite', 'Salada ceasar com frango', 'Nova refeição']
-    }
+      date: '13.08.22',
+      data: [
+        {
+          id: 'abz',
+          hour: '09:00',
+          name: 'X-tudo',
+          status: false,
+        },
+        {
+          id: 'aby',
+          hour: '10:00',
+          name: 'Café da manhã',
+          status: false,
+        },
+        {
+          id: 'zbx',
+          hour: '12:00',
+          name: 'Almoço',
+          status: true,
+        }
+      ]
+    },
+    {
+      date: '14.08.22',
+      data: [
+        {
+          id: 'arx',
+          hour: '09:00',
+          name: 'X-tudo',
+          status: true,
+        },
+        {
+          id: 'atx',
+          hour: '10:00',
+          name: 'Café da manhã',
+          status: true,
+        },
+        {
+          id: 'ar8',
+          hour: '12:00',
+          name: 'Almoço',
+          status: true,
+        }
+      ]
+    },
   ]);
+
+  async function getDiets() {
+    try {
+      setLoading(true);
+
+      // const data = await mealGetAll();
+      // data.sort((a, b) => {
+      //   const compare = a.date.localeCompare(b.date);
+
+      //   if (compare === 0) {
+      //     return a.hour.localeCompare(b.hour);
+      //   }
+
+      //   return compare;
+      // });
+      // setDietList(data);
+      // console.log(data);
+    } catch(error) {
+      console.log(error);
+      Alert.alert('Aviso', 'Não foi possível carregar as dietas');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function handleResumeNavigation() {
     navigate('statistics');
@@ -31,6 +118,10 @@ export function Home() {
     navigate('new_meal');
   }
 
+  useFocusEffect(useCallback(() => {
+    getDiets();
+  }, []));
+
   return (
     <Container>
       <Header />
@@ -39,16 +130,28 @@ export function Home() {
 
       <TitleList>Refeições</TitleList>
 
-      <Button title="Nova refeição" icon="add" onPress={handleNewMealNavigation} />
+      <Button
+        title="Nova refeição"
+        icon="add"
+        onPress={handleNewMealNavigation}
+      />
 
-      <FlatList
+      <SectionList
+        sections={dietList}
+        keyExtractor={(item) => item.hour}
+        renderItem={({ item }) => <Meal item={item} />}
+        renderSectionHeader={({ section: { date } }) => <DateText>{date}</DateText>}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={() => <View style={{ height: 60 }} />}
+      />
+      {/* <FlatList
         data={dietList}
-        keyExtractor={item => item.data}
+        keyExtractor={item => item.date}
         renderItem={({ item }) => (
-          <DayItem data={item.data} items={item.items} />
+          <DayItem data={item.date} items={[]} />
         )}
         showsVerticalScrollIndicator={false}
-      />
+      /> */}
     </Container>
   );
 }
