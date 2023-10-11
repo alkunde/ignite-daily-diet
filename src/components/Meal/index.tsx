@@ -10,11 +10,13 @@ import {
 
 type Props = {
   item: MealPresentation;
+  handlePress: () => void;
 }
 
-export function Meal({ item }: Props) {
+export function Meal({ item, handlePress }: Props) {
+  console.log(item);
   return (
-    <Container>
+    <Container onPress={handlePress}>
       <HourText>{item.hour}</HourText>
 
       <Separator />

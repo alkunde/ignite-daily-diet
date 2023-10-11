@@ -17,7 +17,6 @@ export function Diet({
   onPositiveClick,
   onNegativeClick,
 }: Props) {
-  console.log(`${label} - ${selected} - ${Platform.OS}`);
   return (
     <Container>
       <Label>

@@ -7,6 +7,9 @@ export declare global {
       feedback: {
         positive: boolean;
       };
+      meal_detail: {
+        id: string;
+      };
     }
   }
 }
