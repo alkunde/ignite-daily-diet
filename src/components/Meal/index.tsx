@@ -14,7 +14,6 @@ type Props = {
 }
 
 export function Meal({ item, handlePress }: Props) {
-  console.log(item);
   return (
     <Container onPress={handlePress}>
       <HourText>{item.hour}</HourText>

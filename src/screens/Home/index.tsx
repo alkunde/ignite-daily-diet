@@ -8,7 +8,6 @@ import { Button } from '@components/Button';
 import { Meal } from '@components/Meal';
 
 import { MealPresentation } from '@storage/meal/MealStorageDTO';
-import { mealGetAll } from '@storage/meal/mealGetAll';
 import { dietGetAll } from '@storage/diet/dietGetAll';
 
 import { Container, TitleList, DateText } from './styles';
@@ -28,23 +27,6 @@ export function Home() {
     try {
       setLoading(true);
 
-      // const data = await mealGetAll();
-      // const diets: DietPresentation[] = [];
-      // data.sort((a, b) => {
-      //   const compare = a.date.localeCompare(b.date);
-
-      //   if (compare === 0) {
-      //     return a.hour.localeCompare(b.hour);
-      //   }
-
-      //   return compare;
-      // });
-      // data.map(item => {
-      //   diets.push({
-      //     date: item.date,
-      //     data: []
-      //   });
-      // });
       const diets = await dietGetAll();
       setDietList(diets);
     } catch(error) {

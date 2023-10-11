@@ -18,36 +18,37 @@ import {
   Content,
   Label,
 } from './styles';
+import { AppError } from '@utils/AppError';
 
 export function NewMeal() {
   const { navigate, goBack } = useNavigation();
 
   const [name, setName] = useState('Refeição');
   const [description, setDescription] = useState('Refeição de teste');
-  const [mealDate, setMealDate] = useState('12.08.22');
+  const [mealDate, setMealDate] = useState('12.08.2022');
   const [mealHour, setMealHour] = useState('08:00');
   const [mealType, setMealType] = useState('POSITIVE');
 
   async function handleFeedbackNavigation() {
-    // if (name.trim().length === 0) {
-    //   return Alert.alert('Aviso', 'Informe o nome da refeição');
-    // }
+    if (name.trim().length === 0) {
+      return Alert.alert('Aviso', 'Informe o nome da refeição');
+    }
 
-    // if (description.trim().length === 0) {
-    //   return Alert.alert('Aviso', 'Informe a descrição da refeição');
-    // }
+    if (description.trim().length === 0) {
+      return Alert.alert('Aviso', 'Informe a descrição da refeição');
+    }
 
-    // if (mealDate.trim().length === 0) {
-    //   return Alert.alert('Aviso', 'Informe a data da refeição');
-    // }
+    if (mealDate.trim().length === 0) {
+      return Alert.alert('Aviso', 'Informe a data da refeição');
+    }
 
-    // if (mealHour.trim().length === 0) {
-    //   return Alert.alert('Aviso', 'Informe a hora da refeição');
-    // }
+    if (mealHour.trim().length === 0) {
+      return Alert.alert('Aviso', 'Informe a hora da refeição');
+    }
 
-    // if (mealType.trim().length === 0) {
-    //   return Alert.alert('Aviso', 'Informe se a refeição está dentro ou fora da dieta');
-    // }
+    if (mealType.trim().length === 0) {
+      return Alert.alert('Aviso', 'Informe se a refeição está dentro ou fora da dieta');
+    }
     const newMeal: MealStorageDTO = {
       id: Date.now().toString(),
       name,
@@ -57,9 +58,18 @@ export function NewMeal() {
       status: mealType === 'POSITIVE',
     };
 
-    await mealCreate(newMeal);
+    try {
+      await mealCreate(newMeal);
 
-    navigate('feedback', { positive: newMeal.status });
+      navigate('feedback', { positive: newMeal.status });
+    } catch(error) {
+      if (error instanceof AppError) {
+        Alert.alert('Aviso', error.message);
+      } else {
+        Alert.alert('Aviso', 'Não foi possível registrar essa refeição');
+        console.log(error);
+      }
+    }
   }
 
   function handleClickPositiveSelector() {

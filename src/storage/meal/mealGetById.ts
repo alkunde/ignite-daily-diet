@@ -5,7 +5,7 @@ export async function mealGetById(id: string) {
     const storage = await mealGetAll();
 
     const meal = storage.filter(item => item.id === id);
-    return meal;
+    return meal[0];
   } catch(error) {
     throw error;
   }

@@ -4,17 +4,20 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@assets/*":[
+      "@assets/*": [
         "./src/assets/*"
       ],
-      "@components/*":[
+      "@components/*": [
         "./src/components/*"
       ],
-      "@screens/*":[
+      "@screens/*": [
         "./src/screens/*"
       ],
-      "@storage/*":[
+      "@storage/*": [
         "./src/storage/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
       ]
     }
   }

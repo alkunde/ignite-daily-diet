@@ -1,10 +1,14 @@
 import { TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styled, { css } from 'styled-components/native';
 
-export const Container = styled.View`
+type Props = {
+  status: boolean;
+}
+
+export const Container = styled(SafeAreaView)<Props>`
   flex: 1;
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
-  padding: 24px;
+  background-color: ${({ theme, status }) => status ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `;
 
 export const BackButton = styled(TouchableOpacity)`
@@ -55,13 +59,27 @@ export const DateTimeText = styled.Text`
 `;
 
 export const TagContainer = styled.View`
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-top: 24px;
   padding: 8px 16px;
+  border-radius: 50px;
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 `;
 
-export const TagStatus = styled.View``;
+export const TagStatus = styled.View<Props>`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+  background-color: ${({ theme, status }) => status ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK};
+`;
 
-export const TagText = styled.Text``;
+export const TagText = styled.Text`
+  ${({ theme }) => css`
+    font-family: ${theme.FONTS.REGULAR};
+    font-size: ${theme.SIZES.BODY_S}px;
+    color: ${theme.COLORS.GRAY_100};
+  `};
+`;

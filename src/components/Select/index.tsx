@@ -13,7 +13,6 @@ export function Select({
   selected,
   ...rest
 }: Props) {
-  console.log(selected);
   const label = useMemo(() => {
     return type === 'POSITIVE' ? 'Sim' : 'Não'
   }, [type]);
