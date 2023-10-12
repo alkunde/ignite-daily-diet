@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 import { Select } from '@components/Select';
 
 import { Container, Label, Options, Separator } from './styles';

@@ -32,9 +32,6 @@ export const SubtitleBold = styled.Text`
 export const Image = styled.Image.attrs({
   resizeMode: 'contain',
 })`
-  width: 224px;
-  height: 288px;
-
   margin-top: 40px;
   margin-bottom: 32px;
 `;
