@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from 'styled-components/native';
 
 import { StatsCard } from '@components/StatsCard';
 
@@ -25,6 +26,7 @@ import {
 
 export function Statistics() {
   const { goBack } = useNavigation();
+  const { COLORS } = useTheme();
 
   const [total, setTotal] = useState(0);
   const [inDiet, setInDiet] = useState(0);
@@ -47,8 +49,8 @@ export function Statistics() {
     data.map(item => {
       if (item.status) {
         count++;
-      } else {
         if (count > max) max = count;
+      } else {
         count = 0;
       }
     });
@@ -84,7 +86,7 @@ export function Statistics() {
           </DescriptionText>
 
           <BackButton onPress={goBack}>
-            <BackIcon status={percent >= 0.5} />
+            <BackIcon color={percent >= 0.5 ? COLORS.GREEN_DARK : COLORS.RED_DARK} />
           </BackButton>
         </HeaderContent>
       </Header>

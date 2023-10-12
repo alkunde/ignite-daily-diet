@@ -5,9 +5,11 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Header } from '@components/Header';
 import { Resume } from '@components/Resume';
 import { Button } from '@components/Button';
+import { Loading } from '@components/Loading';
 import { Meal } from '@components/Meal';
 
 import { MealPresentation } from '@storage/meal/MealStorageDTO';
+import { mealGetAll } from '@storage/meal/mealGetAll';
 import { dietGetAll } from '@storage/diet/dietGetAll';
 
 import { Container, TitleList, DateText } from './styles';
@@ -22,12 +24,17 @@ export function Home() {
 
   const [loading, setLoading] = useState(true);
   const [dietList, setDietList] = useState<DietPresentation[]>([]);
+  const [total, setTotal] = useState(0);
+  const [totalInDiet, setTotalInDiet] = useState(0);
 
   async function getDiets() {
     try {
       setLoading(true);
 
       const diets = await dietGetAll();
+      const meals = await mealGetAll();
+      setTotal(meals.length);
+      setTotalInDiet(meals.filter(item => item.status).length);
       setDietList(diets);
     } catch(error) {
       console.log(error);
@@ -57,7 +64,13 @@ export function Home() {
     <Container>
       <Header />
 
-      <Resume onPress={handleResumeNavigation} />
+      {dietList.length > 0 && (
+        <Resume
+          total={total}
+          totalInDiet={totalInDiet}
+          onPress={handleResumeNavigation}
+        />
+      )}
 
       <TitleList>Refeições</TitleList>
 
@@ -67,19 +80,21 @@ export function Home() {
         onPress={handleNewMealNavigation}
       />
 
-      <SectionList
-        sections={dietList}
-        keyExtractor={(item, index) => item.id + index}
-        renderItem={({ item }) => (
-          <Meal
-            item={item}
-            handlePress={() => handleMealDetailNavigation(item.id)}
-          />
-        )}
-        renderSectionHeader={({ section: { date } }) => <DateText>{date}</DateText>}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={() => <View style={{ height: 60 }} />}
-      />
+      {loading ? <Loading /> : (
+        <SectionList
+          sections={dietList}
+          keyExtractor={(item, index) => item.id + index}
+          renderItem={({ item }) => (
+            <Meal
+              item={item}
+              handlePress={() => handleMealDetailNavigation(item.id)}
+            />
+          )}
+          renderSectionHeader={({ section: { date } }) => <DateText>{date}</DateText>}
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={() => <View style={{ height: 60 }} />}
+        />
+      )}
     </Container>
   );
 }

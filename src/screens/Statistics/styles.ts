@@ -76,8 +76,7 @@ export const Separator = styled.View`
   width: 12px;
 `;
 
-export const BackIcon = styled(ArrowLeft).attrs<Props>(({ theme, status }) => ({
+export const BackIcon = styled(ArrowLeft).attrs({
   size: 24,
-  color: status ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK,
-}))`
+})`
 `;

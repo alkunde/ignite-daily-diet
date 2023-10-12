@@ -30,7 +30,7 @@ type RouteParams = {
 }
 
 export function MealDetail() {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const route = useRoute();
   const { id } = route.params as RouteParams;
 
@@ -44,6 +44,10 @@ export function MealDetail() {
   async function handleRemoveMeal() {
     await mealRemoveById(id);
     goBack();
+  }
+
+  function handleEditMeal() {
+    navigate('new_meal', { meal });
   }
 
   async function confirmRemoveMeal() {
@@ -110,6 +114,7 @@ export function MealDetail() {
           <Button
             style={{ marginBottom: 12 }}
             title="Editar refeição"
+            onPress={handleEditMeal}
           />
 
           <Button

@@ -2,9 +2,13 @@ import { TouchableOpacity } from 'react-native';
 import { ArrowUpRight } from 'phosphor-react-native';
 import styled, { css } from 'styled-components/native';
 
-export const Container = styled(TouchableOpacity)`
+type Props = {
+  status: boolean;
+}
+
+export const Container = styled(TouchableOpacity)<Props>`
   padding: 20px 16px;
-  background-color: ${({ theme }) => theme.COLORS.GREEN_LIGHT};
+  background-color: ${({ theme, status }) => status ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
   border-radius: 8px;
   margin-bottom: 40px;
 `;
@@ -27,10 +31,9 @@ export const ResumeDescription = styled.Text`
   text-align: center;
 `;
 
-export const Icon = styled(ArrowUpRight).attrs(({ theme }) => ({
+export const Icon = styled(ArrowUpRight).attrs({
   size: 32,
-  color: theme.COLORS.GREEN_DARK,
-}))`
+})`
   position: absolute;
   top: 8px;
   right: 8px;
