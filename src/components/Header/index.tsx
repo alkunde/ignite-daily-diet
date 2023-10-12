@@ -8,7 +8,7 @@ export function Header() {
     <Container>
       <Logo source={logoImg} />
 
-      <Photo source={photo} />
+      <Photo source={{ uri: 'https://github.com/alkunde.png' }} />
     </Container>
   );
 }
