@@ -1,13 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft } from 'phosphor-react-native';
-import { useTheme } from 'styled-components/native';
 
 import { StatsCard } from '@components/StatsCard';
 
-import { MealStorageDTO } from '@storage/meal/MealStorageDTO';
 import { mealGetAll } from '@storage/meal/mealGetAll';
 
 import {
@@ -18,30 +13,47 @@ import {
   BackIcon,
   PercentText,
   DescriptionText,
+  BottomContainer,
+  BottomContent,
+  BottomContentTitle,
+  FakeContent,
+  Separator,
 } from './styles';
-import theme from 'src/theme';
 
 export function Statistics() {
-  const { COLORS, FONTS, SIZES } = useTheme();
   const { goBack } = useNavigation();
 
-  const [data, setData] = useState<MealStorageDTO[]>([]);
+  // const [data, setData] = useState<MealStorageDTO[]>([]);
+  const [total, setTotal] = useState(0);
+  const [inDiet, setInDiet] = useState(0);
+  const [outDiet, setOutDiet] = useState(0);
+  const [percent, setPercent] = useState(0);
 
-  const percent = useMemo(() => {
-    return 49;
-  }, [data]);
+  // const total = useMemo(() => {
+  //   return data.length;
+  // }, [data]);
 
-  const total = useMemo(() => {
-    return data.length;
-  }, [data]);
+  // const inDiet = useMemo(() => {
+  //   return data.filter(item => item.status).length;
+  // }, [data]);
 
-  const inDiet = useMemo(() => {
-    return data.filter(item => item.status).length;
-  }, [data]);
+  // const outDiet = useMemo(() => {
+  //   return data.filter(item => !item.status).length;
+  // }, [data]);
+
+  // const percent = useMemo(() => {
+  //   return inDiet / data.length;
+  // }, [inDiet]);
 
   async function fetchMeals() {
     const data = await mealGetAll();
-    setData(data);
+    const t = data.length;
+    const inD = data.filter(item => item.status).length;
+    const outD = t - inD;
+    setPercent(inD / t);
+    setTotal(t);
+    setInDiet(inD);
+    setOutDiet(outD);
   }
 
   useEffect(() => {
@@ -49,11 +61,15 @@ export function Statistics() {
   }, []);
 
   return (
-    <Container status={percent >= 50}>
+    <Container status={percent >= 0.5}>
       <Header>
         <HeaderContent>
           <PercentText>
-            {percent}
+            {percent.toLocaleString('pt-BR', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+              style: 'percent',
+            })}
           </PercentText>
 
           <DescriptionText>
@@ -61,48 +77,48 @@ export function Statistics() {
           </DescriptionText>
 
           <BackButton onPress={goBack}>
-            <BackIcon />
+            <BackIcon status={percent >= 0.5} />
           </BackButton>
         </HeaderContent>
       </Header>
 
-      <SafeAreaView style={{ flex: 1, top: 190, position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: COLORS.GRAY_700, borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingHorizontal: 24 }}>
-        <Text style={{ textAlign: 'center', fontSize: SIZES.TITLE_XS, fontFamily: FONTS.BOLD, color: COLORS.GRAY_100, marginBottom: 24 }}>
+      <BottomContainer>
+        <BottomContentTitle>
           Estatísticas gerais
-        </Text>
+        </BottomContentTitle>
 
-        <View>
-          <View style={{ flexDirection: 'row' }}>
+        <BottomContent>
+          <FakeContent>
             <StatsCard
               amount="4"
               description="melhor sequência de pratos dentro da dieta"
             />
-          </View>
+          </FakeContent>
 
-          <View style={{ flexDirection: 'row' }}>
+          <FakeContent>
             <StatsCard
               amount={total.toString()}
               description="refeições registradas"
             />
-          </View>
+          </FakeContent>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <FakeContent>
             <StatsCard
               amount={inDiet.toString()}
               description="refeições dentro da dieta"
               status="POSITIVE"
             />
 
-            <View style={{ width: 12 }} />
+            <Separator />
 
             <StatsCard
-              amount="77"
+              amount={outDiet.toString()}
               description="refeições fora da dieta"
               status="NEGATIVE"
             />
-          </View>
-        </View>
-      </SafeAreaView>
+          </FakeContent>
+        </BottomContent>
+      </BottomContainer>
     </Container>
   );
 }

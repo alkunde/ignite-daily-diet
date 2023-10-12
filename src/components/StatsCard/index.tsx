@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import { Container, AmountText, DescriptionText } from './styles';
 
 type Props = {
   amount: string;
@@ -12,23 +11,15 @@ export function StatsCard({
   description,
   status = 'DEFAULT',
 }: Props) {
-  const { COLORS, FONTS, SIZES } = useTheme();
-
-  const color = status === 'POSITIVE'
-    ? COLORS.GREEN_LIGHT
-    : status === 'NEGATIVE'
-      ? COLORS.RED_LIGHT
-      : COLORS.GRAY_600;
-
   return (
-    <View style={{ flex: 1, padding: 16, backgroundColor: color, borderRadius: 8, marginBottom: 12, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: COLORS.GRAY_100, fontSize: SIZES.TITLE_M, fontFamily: FONTS.BOLD }}>
+    <Container status={status}>
+      <AmountText>
         {amount}
-      </Text>
+      </AmountText>
 
-      <Text style={{ textAlign: 'center', color: COLORS.GRAY_200, fontSize: SIZES.BODY_S, fontFamily: FONTS.REGULAR }}>
+      <DescriptionText>
         {description}
-      </Text>
-    </View>
+      </DescriptionText>
+    </Container>
   );
 }
