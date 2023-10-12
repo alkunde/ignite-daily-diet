@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft } from 'phosphor-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -11,11 +10,14 @@ import { mealRemoveById } from '@storage/meal/mealRemoveById';
 
 import {
   Container,
+  HeaderContainer,
   BackButton,
+  HeaderTitle,
+  BottomContainer,
+  BottomContent,
   DateTimeHeader,
   DateTimeText,
   DescriptionText,
-  HeaderTitle,
   NameText,
   TagContainer,
   TagStatus,
@@ -68,7 +70,7 @@ export function MealDetail() {
   return (
     meal && (
       <Container status={meal.status}>
-        <View style={{ padding: 24 }}>
+        <HeaderContainer>
           <HeaderTitle>
             Refeição
           </HeaderTitle>
@@ -76,24 +78,10 @@ export function MealDetail() {
           <BackButton onPress={goBack}>
             <ArrowLeft />
           </BackButton>
-        </View>
+        </HeaderContainer>
 
-        <SafeAreaView
-          style={{
-            flex: 1,
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            top: 120,
-            backgroundColor: '#fff',
-            borderTopEndRadius: 20,
-            borderTopStartRadius: 20,
-            paddingHorizontal: 24,
-            paddingBottom: 16,
-          }}
-        >
-          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+        <BottomContainer>
+          <BottomContent>
             <NameText>
               {meal.name}
             </NameText>
@@ -117,7 +105,7 @@ export function MealDetail() {
                 { meal.status ? "dentro da dieta" : "fora da dieta" }
               </TagText>
             </TagContainer>
-          </View>
+          </BottomContent>
 
           <Button
             style={{ marginBottom: 12 }}
@@ -129,7 +117,7 @@ export function MealDetail() {
             type="SECONDARY"
             onPress={confirmRemoveMeal}
           />
-        </SafeAreaView>
+        </BottomContainer>
       </Container>
     )
   );

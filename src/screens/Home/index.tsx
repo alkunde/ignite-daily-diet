@@ -42,7 +42,7 @@ export function Home() {
   }
 
   function handleNewMealNavigation() {
-    navigate('new_meal');
+    navigate('new_meal', { meal: undefined });
   }
 
   function handleMealDetailNavigation(id: string) {
@@ -80,14 +80,6 @@ export function Home() {
         showsVerticalScrollIndicator={false}
         ListFooterComponent={() => <View style={{ height: 60 }} />}
       />
-      {/* <FlatList
-        data={dietList}
-        keyExtractor={item => item.date}
-        renderItem={({ item }) => (
-          <DayItem data={item.date} items={[]} />
-        )}
-        showsVerticalScrollIndicator={false}
-      /> */}
     </Container>
   );
 }

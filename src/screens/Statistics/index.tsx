@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatsCard } from '@components/StatsCard';
 
 import { mealGetAll } from '@storage/meal/mealGetAll';
+
+import { AppError } from '@utils/AppError';
 
 import {
   Container,
@@ -53,7 +56,15 @@ export function Statistics() {
   }
 
   useEffect(() => {
-    fetchMeals();
+    try {
+      fetchMeals();
+    } catch(error) {
+      if (error instanceof AppError) {
+        Alert.alert('Aviso', error.message);
+      } else {
+        Alert.alert('Aviso', 'Falha ao carregar as refeição');
+      }
+    }
   }, []);
 
   return (

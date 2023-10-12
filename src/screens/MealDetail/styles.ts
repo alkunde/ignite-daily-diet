@@ -11,6 +11,10 @@ export const Container = styled(SafeAreaView)<Props>`
   background-color: ${({ theme, status }) => status ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `;
 
+export const HeaderContainer = styled.View`
+  padding: 24px;
+`;
+
 export const BackButton = styled(TouchableOpacity)`
   width: 24px;
   height: 24px;
@@ -26,6 +30,26 @@ export const HeaderTitle = styled.Text`
     color: ${theme.COLORS.GRAY_100};
   `};
   text-align: center;
+`;
+
+export const BottomContainer = styled(SafeAreaView)`
+  flex: 1;
+  position: absolute;
+  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+  top: 120px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  padding-bottom: 16px;
+  padding-right: 24px;
+  padding-left: 24px;
+`;
+
+export const BottomContent = styled.View`
+  flex: 1;
+  align-items: flex-start;
 `;
 
 export const NameText = styled.Text`

@@ -1,11 +1,10 @@
 import { TouchableOpacityProps } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 
-import { Container, Title, ButtonIcon } from './styles';
+import { AddIcon, Container, EditIcon, RemoveIcon, Title } from './styles';
 
 type Props = TouchableOpacityProps & {
   title: string;
-  icon?: keyof typeof MaterialIcons.glyphMap;
+  icon?: 'add' | 'edit' | 'remove';
   type?: 'PRIMARY' | 'SECONDARY';
 }
 
@@ -17,7 +16,11 @@ export function Button({
 }: Props) {
   return (
     <Container type={type} {...rest}>
-      <ButtonIcon name={icon} />
+      {icon && icon === 'add' && <AddIcon type={type} />}
+
+      {icon && icon === 'edit' && <EditIcon type={type} />}
+
+      {icon && icon === 'remove' && <RemoveIcon type={type} />}
 
       <Title type={type}>
         {title}

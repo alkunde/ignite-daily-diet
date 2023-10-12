@@ -1,6 +1,7 @@
 import { TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import styled, { css } from 'styled-components/native';
+import { PencilSimpleLine, Plus, Trash } from 'phosphor-react-native';
 
 type Props = {
   type: 'PRIMARY' | 'SECONDARY';
@@ -32,9 +33,23 @@ export const Title = styled.Text<Props>`
   color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200};
 `;
 
-export const ButtonIcon = styled(MaterialIcons).attrs(({ theme }) => ({
+export const AddIcon = styled(Plus).attrs<Props>(({ theme, type }) => ({
   size: 18,
-  color: theme.COLORS.WHITE,
+  color: type === 'PRIMARY' ? theme.COLORS.WHITE : theme.COLORS.GRAY_100
+}))`
+  margin-right: 12px;
+`;
+
+export const EditIcon = styled(PencilSimpleLine).attrs<Props>(({ theme, type }) => ({
+  size: 18,
+  color: type === 'PRIMARY' ? theme.COLORS.WHITE : theme.COLORS.GRAY_100
+}))`
+  margin-right: 12px;
+`;
+
+export const RemoveIcon = styled(Trash).attrs<Props>(({ theme, type }) => ({
+  size: 18,
+  color: type === 'PRIMARY' ? theme.COLORS.WHITE : theme.COLORS.GRAY_100
 }))`
   margin-right: 12px;
 `;

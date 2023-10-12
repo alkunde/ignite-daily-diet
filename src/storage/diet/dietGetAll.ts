@@ -1,5 +1,5 @@
-import { MealPresentation, MealStorageDTO } from "@storage/meal/MealStorageDTO";
-import { mealGetAll } from "@storage/meal/mealGetAll";
+import { MealPresentation, MealStorageDTO } from '@storage/meal/MealStorageDTO';
+import { mealGetAll } from '@storage/meal/mealGetAll';
 
 type DietPresentation = {
   date: string;

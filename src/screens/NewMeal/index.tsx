@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { ArrowLeft } from 'phosphor-react-native';
 
 import { Button } from '@components/Button';
@@ -10,24 +10,32 @@ import { Input } from '@components/Input';
 import { mealCreate } from '@storage/meal/mealCreate';
 import { MealStorageDTO } from '@storage/meal/MealStorageDTO';
 
+import { AppError } from '@utils/AppError';
+
 import {
   Container,
-  HeaderContent,
+  HeaderContainer,
   BackButton,
   HeaderTitle,
-  Content,
+  BottomContainer,
+  BottomContent,
   Label,
 } from './styles';
-import { AppError } from '@utils/AppError';
+
+type RouteParams = {
+  meal: MealStorageDTO;
+}
 
 export function NewMeal() {
   const { navigate, goBack } = useNavigation();
+  const route = useRoute();
+  const { meal } = route.params as RouteParams;
 
-  const [name, setName] = useState('Refeição');
-  const [description, setDescription] = useState('Refeição de teste');
-  const [mealDate, setMealDate] = useState('12.08.2022');
-  const [mealHour, setMealHour] = useState('08:00');
-  const [mealType, setMealType] = useState('POSITIVE');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [mealDate, setMealDate] = useState('');
+  const [mealHour, setMealHour] = useState('');
+  const [mealType, setMealType] = useState('');
 
   async function handleFeedbackNavigation() {
     if (name.trim().length === 0) {
@@ -67,7 +75,6 @@ export function NewMeal() {
         Alert.alert('Aviso', error.message);
       } else {
         Alert.alert('Aviso', 'Não foi possível registrar essa refeição');
-        console.log(error);
       }
     }
   }
@@ -80,22 +87,30 @@ export function NewMeal() {
     setMealType('NEGATIVE');
   }
 
+  useEffect(() => {
+    if (meal !== undefined) {
+      setName(meal.name);
+      setDescription(meal.description);
+      setMealDate(meal.date);
+      setMealHour(meal.hour);
+      setMealType(meal.status ? 'POSITIVE' : 'NEGATIVE');
+    }
+  }, []);
+
   return (
     <Container>
-      <HeaderContent>
-        <View>
-          <HeaderTitle>
-            Nova refeição
-          </HeaderTitle>
+      <HeaderContainer>
+        <HeaderTitle>
+          {meal ? 'Editar refeição' : 'Nova refeição'}
+        </HeaderTitle>
 
-          <BackButton onPress={goBack}>
-            <ArrowLeft size={24} />
-          </BackButton>
-        </View>
-      </HeaderContent>
+        <BackButton onPress={goBack}>
+          <ArrowLeft />
+        </BackButton>
+      </HeaderContainer>
 
-      <Content>
-        <View style={{ flex: 1 }}>
+      <BottomContainer>
+        <BottomContent>
           <Label>Nome</Label>
           <Input
             value={name}
@@ -136,13 +151,13 @@ export function NewMeal() {
             onPositiveClick={handleClickPositiveSelector}
             onNegativeClick={handleClickNegativeSelector}
           />
-        </View>
+        </BottomContent>
 
         <Button
-          title="Cadastrar refeição"
+          title={meal ? 'Salvar alterações' : 'Cadastrar refeição'}
           onPress={handleFeedbackNavigation}
         />
-      </Content>
+      </BottomContainer>
     </Container>
   );
 }

@@ -7,7 +7,9 @@ export const Container = styled(SafeAreaView)`
   background-color: ${({ theme }) => theme.COLORS.GRAY_500};
 `;
 
-export const HeaderContent = styled.View``;
+export const HeaderContainer = styled.View`
+  padding: 24px;
+`;
 
 export const BackButton = styled(TouchableOpacity)`
   width: 24px;
@@ -23,17 +25,26 @@ export const HeaderTitle = styled.Text`
     font-size: ${theme.SIZES.TITLE_S}px;
     color: ${theme.COLORS.GRAY_100};
   `};
-  padding: 24px;
   text-align: center;
 `;
 
-export const Content = styled.View`
+export const BottomContainer = styled(SafeAreaView)`
   flex: 1;
+  position: absolute;
   background-color: ${({ theme }) => theme.COLORS.GRAY_700};
-  padding: 40px 24px;
-
+  top: 120px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
+  padding-bottom: 16px;
+  padding-right: 24px;
+  padding-left: 24px;
+`;
+
+export const BottomContent = styled.View`
+  flex: 1;
 `;
 
 export const Label = styled.Text`
