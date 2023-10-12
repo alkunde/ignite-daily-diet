@@ -8,6 +8,16 @@ export async function mealGetAll() {
     const storage = await AsyncStorage.getItem(MEAL_COLLECTION);
 
     const meals: MealStorageDTO[] = storage ? JSON.parse(storage) : [];
+    meals.sort((a, b) => {
+      const compare = a.date.localeCompare(b.date);
+
+      if (compare === 0) {
+        return a.hour.localeCompare(b.hour);
+      }
+
+      return compare;
+    });
+
     return meals;
   } catch(error) {
     throw error;

@@ -10,16 +10,6 @@ export async function dietGetAll() {
   try {
     const storage = await mealGetAll();
 
-    storage.sort((a, b) => {
-      const compare = a.date.localeCompare(b.date);
-
-      if (compare === 0) {
-        return a.hour.localeCompare(b.hour);
-      }
-
-      return compare;
-    });
-
     const response: DietPresentation[] = [];
     let actual: MealStorageDTO;
     let count = -1;

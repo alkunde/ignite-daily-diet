@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatsCard } from '@components/StatsCard';
@@ -23,27 +23,11 @@ import {
 export function Statistics() {
   const { goBack } = useNavigation();
 
-  // const [data, setData] = useState<MealStorageDTO[]>([]);
   const [total, setTotal] = useState(0);
   const [inDiet, setInDiet] = useState(0);
   const [outDiet, setOutDiet] = useState(0);
   const [percent, setPercent] = useState(0);
-
-  // const total = useMemo(() => {
-  //   return data.length;
-  // }, [data]);
-
-  // const inDiet = useMemo(() => {
-  //   return data.filter(item => item.status).length;
-  // }, [data]);
-
-  // const outDiet = useMemo(() => {
-  //   return data.filter(item => !item.status).length;
-  // }, [data]);
-
-  // const percent = useMemo(() => {
-  //   return inDiet / data.length;
-  // }, [inDiet]);
+  const [strike, setStrike] = useState(0);
 
   async function fetchMeals() {
     const data = await mealGetAll();
@@ -54,6 +38,18 @@ export function Statistics() {
     setTotal(t);
     setInDiet(inD);
     setOutDiet(outD);
+
+    let count = 0;
+    let max = 0;
+    data.map(item => {
+      if (item.status) {
+        count++;
+      } else {
+        if (count > max) max = count;
+        count = 0;
+      }
+    });
+    setStrike(max);
   }
 
   useEffect(() => {
@@ -90,7 +86,7 @@ export function Statistics() {
         <BottomContent>
           <FakeContent>
             <StatsCard
-              amount="4"
+              amount={strike.toString()}
               description="melhor sequência de pratos dentro da dieta"
             />
           </FakeContent>
